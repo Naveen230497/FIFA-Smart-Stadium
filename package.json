@@ -1,0 +1,21 @@
+{
+  "name": "fifa-smart-stadium",
+  "version": "1.0.0",
+  "description": "FIFA World Cup 2026 Smart Stadium Platform",
+  "main": "app.js",
+  "scripts": {
+    "test": "node tests/test.js"
+  },
+  "keywords": [
+    "fifa",
+    "stadium",
+    "ai",
+    "gemini",
+    "crowd-management"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "",
+  "license": "MIT"
+}
