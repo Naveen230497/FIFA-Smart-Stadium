@@ -65,6 +65,17 @@ body {
 .hidden { display: none !important; }
 .mb-4 { margin-bottom: 1.5rem; }
 .text-lg { font-size: 1.125rem; }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
 
 /* Buttons */
 .btn {
@@ -169,6 +180,33 @@ header {
   line-height: 1.2;
 }
 .subtitle { font-size: 0.9rem; color: var(--text-muted); font-family: 'Inter', sans-serif; text-transform: none; }
+
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+/* Multi-Language Selector */
+.lang-selector select {
+  padding: 0.4rem 0.8rem;
+  background: rgba(0, 0, 0, 0.6);
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+.lang-selector select:focus-visible {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 2px;
+}
+.lang-selector select option {
+  background: var(--pitch-dark);
+  color: var(--text-main);
+}
 
 /* Fan Mode */
 .fan-layout {
@@ -397,3 +435,14 @@ header {
 
 .warning-card { border-color: var(--danger-color); }
 .warning-card h2 { color: var(--danger-color); font-size: 2.5rem; }
+
+/* Footer */
+.site-footer {
+  background: rgba(0, 0, 0, 0.8);
+  border-top: 3px solid var(--primary-color);
+  padding: 1rem 2rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-family: 'Inter', sans-serif;
+}

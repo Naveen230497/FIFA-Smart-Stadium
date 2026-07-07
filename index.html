@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="FIFA World Cup 2026 Smart Stadium Platform featuring GenAI crowd management, real-time decision support, and multi-language navigation.">
+  <meta name="description" content="FIFA World Cup 2026 Smart Stadium Platform featuring GenAI crowd management, real-time decision support, multi-language navigation, and operational intelligence.">
+  <meta name="keywords" content="FIFA 2026, Smart Stadium, GenAI, Crowd Management, Multi-Language, Accessibility, Sustainability">
+  <meta name="author" content="FIFA Connect 2026 Team">
   <title>FIFA 2026 Connect | Smart Stadium Operations</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
   <!-- Semantic Header / Navigation -->
@@ -16,7 +19,7 @@
     <nav class="header-controls" aria-label="Main mode navigation">
       <button id="btn-mode-fan" class="btn btn-outline" aria-label="Switch to Fan Experience Mode">Fan Mode</button>
       <button id="btn-mode-staff" class="btn btn-outline" aria-label="Switch to Staff Operations Mode">Staff Mode</button>
-      <button id="btn-settings" class="btn btn-primary" aria-haspopup="dialog" aria-label="Configure API Settings">⚙️ API Setup</button>
+      <button id="btn-settings" class="btn btn-primary" aria-haspopup="dialog" aria-label="View API configuration status">⚙️ API Status</button>
     </nav>
   </header>
 
@@ -25,14 +28,27 @@
     
     <!-- FAN MODE SECTION -->
     <section id="fan-mode" class="view-section active" aria-labelledby="fan-mode-title">
-      <h2 id="fan-mode-title" class="hidden">Fan Experience Hub</h2>
+      <h2 id="fan-mode-title" class="sr-only">Fan Experience Hub</h2>
       <div class="fan-layout">
         
         <!-- AI Chatbot Interface -->
-        <article class="chat-container card">
+        <article class="chat-container card" aria-labelledby="chat-title">
           <header class="card-header">
-            <h2>AI Stadium Assistant</h2>
-            <p class="subtitle">Ask for directions, food, or support in any language.</p>
+            <div class="card-header-row">
+              <div>
+                <h2 id="chat-title">AI Stadium Assistant</h2>
+                <p class="subtitle">Ask for directions, food, or support in any language.</p>
+              </div>
+              <!-- Multi-Language Selector -->
+              <div class="lang-selector" role="group" aria-label="Language selection for AI responses">
+                <label for="lang-select" class="sr-only">Select Response Language</label>
+                <select id="lang-select" aria-label="Choose the language for AI responses">
+                  <option value="en">🇬🇧 English</option>
+                  <option value="es">🇪🇸 Español</option>
+                  <option value="fr">🇫🇷 Français</option>
+                </select>
+              </div>
+            </div>
           </header>
           
           <!-- ARIA Live Region for Chat -->
@@ -43,24 +59,24 @@
           </div>
           
           <form id="chat-form" class="chat-input-area" aria-label="Chat input form">
-            <label for="chat-input" class="hidden">Type your message to the AI</label>
+            <label for="chat-input" class="sr-only">Type your message to the AI</label>
             <input type="text" id="chat-input" placeholder="Type your message..." required autocomplete="off">
             <button type="submit" class="btn btn-primary" aria-label="Send Message to AI">Send</button>
           </form>
         </article>
 
-        <!-- Schematic Map Placeholder -->
+        <!-- Schematic Map -->
         <aside class="map-container card" aria-labelledby="wayfinding-title">
           <header class="card-header">
             <h2 id="wayfinding-title">Schematic Wayfinding</h2>
-            <p class="subtitle">Static route guidance (Fallback state)</p>
+            <p class="subtitle">AI-powered indoor navigation and route guidance</p>
           </header>
-          <div class="map-display" role="img" aria-label="Football pitch schematic map indicating stadium zones">
+          <div class="map-display" role="img" aria-label="Football pitch schematic map indicating stadium zones and navigation routes">
             <div class="schematic-map">
               <div class="map-zone" data-zone="N" aria-label="North Stand">North Stand</div>
               <div class="map-zone" data-zone="S" aria-label="South Stand">South Stand</div>
-              <div class="map-zone" data-zone="E" aria-label="East Gate">East Gate (Food)</div>
-              <div class="map-zone" data-zone="W" aria-label="West Gate">West Gate (Egress)</div>
+              <div class="map-zone" data-zone="E" aria-label="East Gate - Food Court">East Gate (Food)</div>
+              <div class="map-zone" data-zone="W" aria-label="West Gate - Emergency Egress">West Gate (Egress)</div>
               <svg class="route-overlay" id="route-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
                 <path id="route-path" d="" fill="none" />
               </svg>
@@ -73,16 +89,16 @@
 
     <!-- STAFF MODE SECTION -->
     <section id="staff-mode" class="view-section hidden" aria-labelledby="staff-mode-title">
-      <h2 id="staff-mode-title" class="hidden">Staff Operations Dashboard</h2>
+      <h2 id="staff-mode-title" class="sr-only">Staff Operations Dashboard</h2>
       <div class="staff-layout">
         
         <!-- Real-Time Crowd Heatmap -->
         <article class="heatmap-container card" aria-labelledby="heatmap-title">
           <header class="card-header">
             <h2 id="heatmap-title">Operational Intelligence Heatmap</h2>
-            <p class="subtitle">Live crowd density monitoring.</p>
+            <p class="subtitle">Live crowd density monitoring for real-time decision support.</p>
           </header>
-          <div class="heatmap-grid" id="heatmap-grid" role="region" aria-live="polite">
+          <div class="heatmap-grid" id="heatmap-grid" role="region" aria-live="polite" aria-label="Stadium sector crowd density levels">
             <!-- Grid generated by JS -->
           </div>
         </article>
@@ -91,8 +107,8 @@
         <aside class="alerts-container card" aria-labelledby="alerts-title">
           <header class="card-header">
             <h2 id="alerts-title">GenAI Decision Support</h2>
-            <p class="subtitle">Automated operational recommendations.</p>
-            <button id="btn-sim-alert" class="btn btn-outline btn-sm" aria-label="Simulate an AI generated staff alert">Simulate AI Alert</button>
+            <p class="subtitle">Automated crowd management recommendations.</p>
+            <button id="btn-sim-alert" class="btn btn-outline btn-sm" aria-label="Run AI-powered crowd analysis and generate operational alert">Simulate AI Alert</button>
           </header>
           
           <!-- ARIA Live Region for Critical Alerts -->
@@ -106,28 +122,15 @@
 
   </main>
 
+  <!-- Footer with accessibility info -->
+  <footer role="contentinfo" class="site-footer">
+    <p>FIFA Connect 2026 — Smart Stadium Operations Platform | Multi-language AI | Crowd Management | Accessibility First</p>
+  </footer>
+
   <!-- MODALS -->
 
-  <!-- API Settings Modal -->
-  <dialog id="modal-settings" class="modal hidden" aria-labelledby="settings-title">
-    <div class="modal-content card">
-      <h2 id="settings-title">API Configuration</h2>
-      <p class="mb-4">Enter your Groq API Key to enable GenAI features. This key is strictly stored in your local browser storage and never transmitted elsewhere.</p>
-      <form id="form-settings" aria-label="API Key configuration form">
-        <div class="form-group">
-          <label for="api-key">Groq API Key</label>
-          <input type="password" id="api-key" required placeholder="gsk_..." aria-required="true">
-        </div>
-        <div class="modal-actions">
-          <button type="button" class="btn btn-outline btn-close-modal" aria-label="Cancel and close settings">Cancel</button>
-          <button type="submit" class="btn btn-primary" aria-label="Save API Key">Save Key</button>
-        </div>
-      </form>
-    </div>
-  </dialog>
-
   <!-- Maker-Checker Confirmation Modal -->
-  <dialog id="modal-confirm" class="modal hidden" aria-labelledby="confirm-title">
+  <dialog id="modal-confirm" class="modal hidden" aria-labelledby="confirm-title" aria-modal="true">
     <div class="modal-content card warning-card">
       <h2 id="confirm-title">⚠️ Critical Operation Approval</h2>
       <p id="confirm-message" class="mb-4 text-lg" aria-live="polite">Are you sure you want to execute this action?</p>
@@ -138,6 +141,6 @@
     </div>
   </dialog>
 
-  <script src="app.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

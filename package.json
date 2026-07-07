@@ -4,7 +4,8 @@
   "description": "FIFA World Cup 2026 Smart Stadium Platform",
   "main": "app.js",
   "scripts": {
-    "test": "node tests/test.js"
+    "test": "node --test tests/test.js",
+    "lint": "npx eslint js/ api/"
   },
   "keywords": [
     "fifa",
