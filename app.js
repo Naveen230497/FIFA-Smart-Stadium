@@ -38,11 +38,11 @@ const App = (function () {
     btnConfirmAction: document.getElementById('btn-confirm-action')
   };
 
-  /** @type {string} */
-  let apiKey = localStorage.getItem('groq_api_key') || '';
-  
   /** @type {Function|null} */
   let activeActionCallback = null;
+
+  /** @type {boolean} */
+  let useMock = false; // Toggle to true to test local Demo Mode if backend isn't running
 
   /**
    * Initializes the application and binds events.
@@ -62,15 +62,8 @@ const App = (function () {
     els.btnFan.addEventListener('click', () => switchMode('fan'));
     els.btnStaff.addEventListener('click', () => switchMode('staff'));
     
-    els.btnSettings.addEventListener('click', () => els.modalSettings.classList.remove('hidden'));
-    els.btnSettingsCancel.addEventListener('click', () => els.modalSettings.classList.add('hidden'));
-    
-    els.formSettings.addEventListener('submit', (e) => {
-      e.preventDefault();
-      apiKey = sanitizeInput(els.apiKeyInput.value);
-      localStorage.setItem('groq_api_key', apiKey);
-      els.modalSettings.classList.add('hidden');
-      alert('API Key Saved Securely!');
+    els.btnSettings.addEventListener('click', () => {
+      alert("API Configuration is now managed securely on the server via Environment Variables (Vercel/Node).");
     });
 
     els.chatForm.addEventListener('submit', handleChatSubmit);
@@ -158,7 +151,6 @@ const App = (function () {
     appendMessage('user', text);
     els.chatInput.value = '';
 
-    let useMock = !apiKey;
     const loaderId = appendMessage('ai', useMock ? 'Demo Mode Active. Simulating AI...' : 'Thinking...');
     updateSchematicMap(text);
 
@@ -255,7 +247,6 @@ const App = (function () {
    * @returns {Promise<void>}
    */
   async function generateAIAlert() {
-    let useMock = !apiKey;
     renderHeatmap(); 
     els.alertsList.textContent = ''; 
     
@@ -325,22 +316,18 @@ const App = (function () {
   }
 
   /**
-   * Securely calls the Groq API.
+   * Securely calls the Serverless Proxy API.
    * @param {string} prompt - The prompt payload
    * @returns {Promise<string>} The AI response string
    */
   async function callGroqAPI(prompt) {
-    const url = 'https://api.groq.com/openai/v1/chat/completions';
-    const payload = {
-      model: "llama-3.1-8b-instant",
-      messages: [{ role: "user", content: prompt }]
-    };
+    const url = '/api/chat';
+    const payload = { prompt };
 
     const res = await fetch(url, {
       method: 'POST',
       headers: { 
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload)
     });
@@ -349,12 +336,12 @@ const App = (function () {
       let errText = '';
       try {
         const errJson = await res.json();
-        errText = errJson.error.message;
+        errText = errJson.error || errJson.message;
       } catch (e) {
         console.warn('Could not parse JSON error response', e);
         errText = await res.text();
       }
-      throw new Error(`API returned ${res.status}: ${errText}`);
+      throw new Error(`Proxy API returned ${res.status}: ${errText}`);
     }
 
     const data = await res.json();
