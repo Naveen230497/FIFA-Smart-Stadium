@@ -158,18 +158,20 @@ const App = (function () {
     appendMessage('user', text);
     els.chatInput.value = '';
 
-    if (!apiKey) {
-      appendMessage('ai', 'Error: Please configure your Groq API Key in Settings first.');
-      return;
-    }
-
-    const loaderId = appendMessage('ai', 'Thinking...');
+    let useMock = !apiKey;
+    const loaderId = appendMessage('ai', useMock ? 'Demo Mode Active. Simulating AI...' : 'Thinking...');
     updateSchematicMap(text);
 
     try {
-      const response = await callGroqAPI(
-        `You are the official FIFA 2026 Smart Stadium Assistant. If the user asks for directions, food, or gates, tell them to look at the "Schematic Wayfinding" map on their screen, which will highlight their route. Do not mention wristbands or other apps. Keep responses under 2 sentences. The user asks: ${text}`
-      );
+      let response;
+      if (useMock) {
+        response = getMockFanResponse(text);
+        await new Promise(r => setTimeout(r, 800)); // Simulate network delay
+      } else {
+        response = await callGroqAPI(
+          `You are the official FIFA 2026 Smart Stadium Assistant. If the user asks for directions, food, or gates, tell them to look at the "Schematic Wayfinding" map on their screen, which will highlight their route. Do not mention wristbands or other apps. Keep responses under 2 sentences. The user asks: ${text}`
+        );
+      }
       updateMessage(loaderId, response);
     } catch (err) {
       updateMessage(loaderId, `Error communicating with AI: ${err.message}`);
@@ -253,23 +255,25 @@ const App = (function () {
    * @returns {Promise<void>}
    */
   async function generateAIAlert() {
-    if (!apiKey) {
-      alert('Please configure your Groq API Key in Settings first.');
-      return;
-    }
-    
+    let useMock = !apiKey;
     renderHeatmap(); 
     els.alertsList.textContent = ''; 
     
     const loadingState = document.createElement('div');
     loadingState.className = 'alert-item empty-state';
-    loadingState.textContent = 'Analyzing stadium telemetry...';
+    loadingState.textContent = useMock ? 'Demo Mode: Analyzing stadium telemetry...' : 'Analyzing stadium telemetry...';
     els.alertsList.appendChild(loadingState);
     
     try {
-      const response = await callGroqAPI(
-        `Act as an operational AI for FIFA 2026. Generate a 1-sentence urgent crowd management alert recommending opening a specific emergency gate due to congestion. Format it as an actionable alert.`
-      );
+      let response;
+      if (useMock) {
+        response = "Sector 4 is nearing capacity; recommend opening emergency egress Gate B to relieve congestion immediately.";
+        await new Promise(r => setTimeout(r, 1000));
+      } else {
+        response = await callGroqAPI(
+          `Act as an operational AI for FIFA 2026. Generate a 1-sentence urgent crowd management alert recommending opening a specific emergency gate due to congestion. Format it as an actionable alert.`
+        );
+      }
       
       els.alertsList.textContent = ''; 
 
@@ -355,6 +359,22 @@ const App = (function () {
 
     const data = await res.json();
     return data.choices[0].message.content;
+  }
+
+  /**
+   * Provides mock responses for Fan mode when no API key is set.
+   * @param {string} text - The user query
+   * @returns {string} The simulated AI response
+   */
+  function getMockFanResponse(text) {
+    const lower = text.toLowerCase();
+    if (lower.includes('food') || lower.includes('eat') || lower.includes('hungry')) {
+      return "There are fantastic food concessions located at the East Gate. Please refer to the Schematic Wayfinding map on your screen to see the route!";
+    }
+    if (lower.includes('gate') || lower.includes('exit') || lower.includes('leave')) {
+      return "The nearest egress point is the West Gate. Check the Schematic Wayfinding map for a highlighted route to safety.";
+    }
+    return "Welcome to the FIFA 2026 Smart Stadium! I can help you find food, navigate to your seats, or locate the nearest gates. How can I assist you?";
   }
 
   return {
