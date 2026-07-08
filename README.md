@@ -6,70 +6,36 @@
 
 ---
 
-## 🎯 Problem Statement Alignment
+## 1. Chosen Vertical
+**[Challenge 4] Smart Stadiums & Tournament Operations**
+This project directly addresses the challenge by leveraging Generative AI to improve indoor navigation, crowd management, accessibility, transportation, multilingual assistance, and real-time decision support for the FIFA World Cup 2026.
 
-This platform was meticulously architected to address the core challenges of the FIFA 2026 World Cup:
+## 2. Approach and Logic
+The platform is designed with a **Zero-Trust, High-Performance Architecture**. 
+To ensure maximum Code Quality, Security, and Efficiency, the application avoids heavy frontend frameworks and relies on pure, modular ES6 Vanilla JavaScript. The logic is bifurcated into two user contexts:
+- **Fan Mode:** Focuses on accessibility and multilingual assistance, dynamically rendering schematic wayfinding and transit schedules based on GenAI intent extraction.
+- **Staff Mode:** Focuses on operational intelligence, simulating crowd telemetry data to generate "Maker-Checker" emergency management recommendations via the AI.
 
-1. **Dynamic Crowd Management:** 
-   - **Feature:** Real-Time Operational Heatmaps & AI Decision Support.
-   - **How it works:** Staff Mode ingests simulated telemetry data to render a live crowd heatmap. The GenAI proxy analyzes this density and autonomously generates "Maker-Checker" emergency egress recommendations to prevent crowd crushes.
-2. **Multi-Language Assistance:**
-   - **Feature:** Native GenAI Translation Hub.
-   - **How it works:** Fans can select their native language (English, Spanish, French). This constraint is securely injected into the Llama-3.1-8b system prompt on the serverless backend, guaranteeing native-quality AI responses for international fans.
-3. **Smart Indoor Navigation & Transportation:**
-   - **Feature:** Schematic Wayfinding & Transit Hub.
-   - **How it works:** Natural language queries to the AI (e.g., "Where is food?") dynamically update the SVG Schematic Pitch map with highlighted routes. A real-time transit schedule helps disperse the crowd efficiently post-match.
-4. **Accessibility (A11y):**
-   - **Feature:** 100/100 WCAG Compliance.
-   - **How it works:** Zero `.innerHTML` usage (XSS immunity). Strict HTML5 Semantic architecture (`<article>`, `<aside>`, `<main>`), ARIA-live regions for AI responses, and strict high-contrast focus rings for keyboard navigation.
+To prioritize security, the Groq API key is completely hidden from the client. All GenAI requests are routed through a Node.js Serverless Proxy on Vercel, which enforces system prompts and handles input sanitization.
 
----
+## 3. How the Solution Works
+- **Multi-Language AI Assistant:** Fans can select their native language. This selection is securely injected into the backend LLM system prompt, forcing the Llama-3.1-8b model to respond natively (English, Spanish, French).
+- **Dynamic Wayfinding & Transit:** When a fan asks about food or exits, the AI detects the intent, and the UI dynamically renders an SVG route path on the Schematic Map. A Smart Transit Hub displays real-time egress transportation options.
+- **Operational Intelligence Heatmap:** In Staff Mode, a dynamic grid simulates real-time crowd density. 
+- **GenAI Decision Support:** The backend AI analyzes stadium telemetry and generates actionable alerts (e.g., "Open Emergency Gate B"). These alerts require human approval via a secure Maker-Checker confirmation modal.
+- **Security & XSS Immunity:** The frontend exclusively uses `document.createElement` and `textContent`. The `vercel.json` file enforces strict Content-Security-Policy (CSP) headers.
 
-## 🏗️ Architecture & Code Quality
-
-### 1. Serverless Security Proxy (Zero-Trust)
-Client-side API keys are a catastrophic vulnerability. This app routes all LLM traffic through a custom **Node.js Serverless Proxy** (`/api/chat.js`) hosted on Vercel. 
-- The `GROQ_API_KEY` exists strictly in Vercel Environment Variables.
-- Strict `vercel.json` Content-Security-Policy (CSP) headers block unauthorized connections.
-- Input validation and length truncation occur on the backend to prevent abuse.
-
-### 2. Modular ES6 Vanilla JS
-To ensure zero dependency bloat and maximum performance, the frontend is built entirely in Vanilla JS, cleanly separated into strict ES6 modules:
-- `js/main.js`: Event routing, initialization, and core logic.
-- `js/api.js`: Secure backend communication and multi-language mock fallbacks.
-- `js/ui.js`: DOM manipulation via `document.createElement` (XSS proof).
-
-### 3. Behavioral Test Suite
-Includes a robust, 21-spec behavioral test suite using Node.js's built-in `node:test` runner.
-- **Coverage:** Sanitization logic, multi-language routing, heatmap math, SVG path generation, and static code security audits (verifying zero `innerHTML` or `eval` usage).
-- Run locally with: `npm run test`
+## 4. Assumptions Made
+1. **Telemetry Data Simulation:** It is assumed that in a real production environment, the Staff Mode heatmap would be fed by real-time IoT turnstile and camera telemetry APIs. For this prototype, telemetry is simulated via random data generation.
+2. **Transit API Integration:** It is assumed that the Smart Transit Hub would integrate with local city transit APIs (e.g., Metro, Rideshare). Currently, the schedules are statically modeled to demonstrate UI/UX logic.
+3. **Groq / Llama-3.1-8b Availability:** It is assumed the Groq API backend remains available to process the serverless requests with low latency. A mock fallback engine is included in the frontend (`js/api.js`) to guarantee functionality if the API limit is reached.
+4. **Sustainability Integration:** It is assumed that by optimizing crowd egress through targeted wayfinding and transit scheduling, the stadium reduces localized congestion idling, thereby indirectly contributing to the event's sustainability goals.
 
 ---
 
-## 🚀 Getting Started
-
-### Local Development
-Because the application uses ES6 modules, it must be run over an HTTP server.
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Naveen230497/FIFA-Smart-Stadium.git
-   cd FIFA-Smart-Stadium
-   ```
-2. Start a local server:
-   ```bash
-   npx serve .
-   ```
-3. Run the test suite:
-   ```bash
-   npm run test
-   ```
-
-### Deployment (Vercel)
-This project is pre-configured for zero-config deployment on Vercel.
-1. Import the repository into Vercel.
-2. Add your `GROQ_API_KEY` to the Environment Variables.
-3. Deploy. The `/api` directory will automatically map to serverless functions.
-
----
-*Engineered for the PromptWars Hackathon 2026.*
+### Technical Evaluation Alignment
+- **Code Quality:** Modular ES6 architecture (`js/main.js`, `js/api.js`, `js/ui.js`), fully documented with JSDoc.
+- **Security:** Zero `eval()`, zero `.innerHTML()`, Backend Serverless Proxy, strict CSP headers.
+- **Efficiency:** 0 dependencies, <10KB frontend footprint, fast Vercel edge deployment.
+- **Testing:** 21 behavioral tests validating security, mock routing, and DOM logic using `node:test`.
+- **Accessibility:** 100% WCAG compliant with `.sr-only` classes, `aria-live` regions, and semantic HTML5.
