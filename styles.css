@@ -436,6 +436,17 @@ header {
 .warning-card { border-color: var(--danger-color); }
 .warning-card h2 { color: var(--danger-color); font-size: 2.5rem; }
 
+/* Transit Hub */
+.transit-content { padding: 1.5rem; }
+.transit-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+.transit-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid var(--pitch-line); border-radius: var(--radius-sm); }
+.transit-route { font-family: 'Teko', sans-serif; font-size: 1.2rem; padding: 0.2rem 0.5rem; border-radius: 4px; color: #000; text-transform: uppercase; }
+.route-red { background: #f87171; }
+.route-blue { background: #60a5fa; }
+.route-green { background: #4ade80; }
+.transit-dest { flex: 1; margin-left: 1rem; font-weight: 600; font-size: 1.1rem; }
+.transit-time { font-family: 'Teko', sans-serif; font-size: 1.5rem; color: var(--primary-color); }
+
 /* Footer */
 .site-footer {
   background: rgba(0, 0, 0, 0.8);
