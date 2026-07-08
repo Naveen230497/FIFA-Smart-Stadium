@@ -1,4 +1,3 @@
-
 /**
  * @module ui
  * @description DOM manipulation module for the FIFA 2026 Smart Stadium app.

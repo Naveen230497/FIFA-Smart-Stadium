@@ -1,4 +1,3 @@
-
 /**
  * @module api
  * @description API communication and mock data layer for the FIFA 2026 Smart Stadium app.

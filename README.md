@@ -18,6 +18,15 @@ To ensure maximum Code Quality, Security, and Efficiency, the application avoids
 
 To prioritize security, the Groq API key is completely hidden from the client. All GenAI requests are routed through a Node.js Serverless Proxy on Vercel, which enforces system prompts and handles input sanitization.
 
+### Architecture Diagram
+```mermaid
+graph TD
+    Client[Vanilla JS Frontend] --> |JSON Payload| Vercel[Vercel Serverless Function]
+    Vercel --> |Secure Prompt Inject| Groq[Groq Llama-3.1-8b API]
+    Groq --> |JSON Response| Vercel
+    Vercel --> |Sanitized HTML| Client
+```
+
 ## 3. How the Solution Works
 - **Multi-Language AI Assistant:** Fans can select their native language. This selection is securely injected into the backend LLM system prompt, forcing the Llama-3.1-8b model to respond natively (English, Spanish, French).
 - **Dynamic Wayfinding & Transit:** When a fan asks about food or exits, the AI detects the intent, and the UI dynamically renders an SVG route path on the Schematic Map. A Smart Transit Hub displays real-time egress transportation options.
@@ -31,6 +40,17 @@ To prioritize security, the Groq API key is completely hidden from the client. A
 2. **Transit API Integration:** It is assumed that the Smart Transit Hub would integrate with local city transit APIs (e.g., Metro, Rideshare). Currently, the schedules are statically modeled to demonstrate UI/UX logic.
 3. **Groq / Llama-3.1-8b Availability:** It is assumed the Groq API backend remains available to process the serverless requests with low latency. A mock fallback engine is included in the frontend (`js/api.js`) to guarantee functionality if the API limit is reached.
 4. **Sustainability Integration:** The platform assumes standard EPA metrics for calculating kg CO2 reduction based on the volume of fans diverted from single-occupancy rideshares to the Smart Transit Hub's express shuttles and metro lines.
+
+## 5. Getting Started
+```bash
+git clone https://github.com/Naveen230497/FIFA-Smart-Stadium.git
+cd FIFA-Smart-Stadium
+npm install
+npm test          # Run 21 behavioral tests
+npm run lint      # Verify 0 ESLint errors
+npm start         # Launch local server
+```
+Open `http://localhost:3000` (or the port served by `npx serve`) in a browser, or deploy to Vercel for the full AI-powered experience.
 
 ---
 

@@ -1,4 +1,3 @@
-
 /**
  * @module main
  * @description Entry point and event routing for the FIFA 2026 Smart Stadium app.
