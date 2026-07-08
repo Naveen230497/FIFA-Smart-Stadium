@@ -1,8 +1,8 @@
 export default [
   {
     languageOptions: {
-      ecmaVersion: 2021,
-      sourceType: "script",
+      ecmaVersion: 2022,
+      sourceType: "module",
       globals: {
         document: "readonly",
         window: "readonly",

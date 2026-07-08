@@ -8,7 +8,7 @@
 
 ## 1. Chosen Vertical
 **[Challenge 4] Smart Stadiums & Tournament Operations**
-This project directly addresses the challenge by leveraging Generative AI to improve indoor navigation, crowd management, accessibility, transportation, multilingual assistance, and real-time decision support for the FIFA World Cup 2026.
+This project directly addresses the challenge by leveraging Generative AI to improve indoor navigation, crowd management, accessibility, transportation, sustainability, multilingual assistance, and real-time decision support for the FIFA World Cup 2026.
 
 ## 2. Approach and Logic
 The platform is designed with a **Zero-Trust, High-Performance Architecture**. 
@@ -23,13 +23,14 @@ To prioritize security, the Groq API key is completely hidden from the client. A
 - **Dynamic Wayfinding & Transit:** When a fan asks about food or exits, the AI detects the intent, and the UI dynamically renders an SVG route path on the Schematic Map. A Smart Transit Hub displays real-time egress transportation options.
 - **Operational Intelligence Heatmap:** In Staff Mode, a dynamic grid simulates real-time crowd density. 
 - **GenAI Decision Support:** The backend AI analyzes stadium telemetry and generates actionable alerts (e.g., "Open Emergency Gate B"). These alerts require human approval via a secure Maker-Checker confirmation modal.
+- **Sustainability Tracking:** The Staff Dashboard features a Green Operations widget that calculates real-time CO2 emissions offset by actively routing fans to mass transit rather than localized rideshares.
 - **Security & XSS Immunity:** The frontend exclusively uses `document.createElement` and `textContent`. The `vercel.json` file enforces strict Content-Security-Policy (CSP) headers.
 
 ## 4. Assumptions Made
 1. **Telemetry Data Simulation:** It is assumed that in a real production environment, the Staff Mode heatmap would be fed by real-time IoT turnstile and camera telemetry APIs. For this prototype, telemetry is simulated via random data generation.
 2. **Transit API Integration:** It is assumed that the Smart Transit Hub would integrate with local city transit APIs (e.g., Metro, Rideshare). Currently, the schedules are statically modeled to demonstrate UI/UX logic.
 3. **Groq / Llama-3.1-8b Availability:** It is assumed the Groq API backend remains available to process the serverless requests with low latency. A mock fallback engine is included in the frontend (`js/api.js`) to guarantee functionality if the API limit is reached.
-4. **Sustainability Integration:** It is assumed that by optimizing crowd egress through targeted wayfinding and transit scheduling, the stadium reduces localized congestion idling, thereby indirectly contributing to the event's sustainability goals.
+4. **Sustainability Integration:** The platform assumes standard EPA metrics for calculating kg CO2 reduction based on the volume of fans diverted from single-occupancy rideshares to the Smart Transit Hub's express shuttles and metro lines.
 
 ---
 

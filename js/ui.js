@@ -1,4 +1,3 @@
-'use strict';
 
 /**
  * @module ui
@@ -8,18 +7,16 @@
  */
 
 /**
- * Internal message counter used to generate unique message IDs.
- * @type {number}
- */
-let msgCounter = 0;
-
-/**
  * UIController provides all DOM manipulation methods for the application.
  * It receives DOM element references via function parameters rather than
  * importing or caching them directly, keeping this module decoupled.
- * @type {Object}
  */
-export const UIController = {
+export class UIController {
+  /**
+   * Internal message counter used to generate unique message IDs.
+   * @type {number}
+   */
+  #msgCounter = 0;
   /**
    * Appends a chat message to the given container securely using createElement.
    * @param {HTMLElement} chatContainer - The chat messages container element.
@@ -28,7 +25,7 @@ export const UIController = {
    * @returns {string} The unique ID of the appended message div.
    */
   appendMessage(chatContainer, sender, text) {
-    const id = 'msg-' + Date.now() + '-' + (++msgCounter);
+    const id = 'msg-' + Date.now() + '-' + (++this.#msgCounter);
     const div = document.createElement('div');
     div.className = `msg ${sender}`;
     div.id = id;
@@ -42,7 +39,7 @@ export const UIController = {
     chatContainer.scrollTop = chatContainer.scrollHeight;
 
     return id;
-  },
+  }
 
   /**
    * Updates an existing chat message's content securely.
@@ -60,7 +57,7 @@ export const UIController = {
       span.textContent = text;
       el.appendChild(span);
     }
-  },
+  }
 
   /**
    * Updates the SVG schematic wayfinding map route path based on keyword matching.
@@ -77,7 +74,7 @@ export const UIController = {
     } else {
       routePath.setAttribute('d', '');
     }
-  },
+  }
 
   /**
    * Renders a randomized crowd-density heatmap into the given container.
@@ -95,7 +92,7 @@ export const UIController = {
       div.textContent = s;
       container.appendChild(div);
     });
-  },
+  }
 
   /**
    * Displays the confirmation modal with the given message text.
@@ -107,7 +104,7 @@ export const UIController = {
   showConfirmModal(modal, messageEl, text) {
     messageEl.textContent = text;
     modal.classList.remove('hidden');
-  },
+  }
 
   /**
    * Creates a styled alert item element with an execute button.
@@ -133,4 +130,4 @@ export const UIController = {
 
     return { container, button };
   }
-};
+}

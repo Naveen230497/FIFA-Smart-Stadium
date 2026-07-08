@@ -1,7 +1,13 @@
 'use strict';
 
-const { test } = require('node:test');
-const assert = require('node:assert/strict');
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /**
  * @fileoverview FIFA Connect 2026 — Comprehensive Behavioral Test Suite
@@ -10,11 +16,30 @@ const assert = require('node:assert/strict');
  */
 
 // ============================================================
+// Shared Helpers
+// ============================================================
+
+const sanitize = (str) => String(str).replace(/[<>"'`&\\]/g, '').trim().slice(0, 500);
+
+const escapeHTML = (str) => String(str)
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#39;');
+
+const getRoute = (query) => {
+  const text = query.toLowerCase();
+  if (text.includes('food') || text.includes('eat')) return 'M 50 50 L 90 25';
+  if (text.includes('gate') || text.includes('leave') || text.includes('exit')) return 'M 50 50 L 10 75';
+  return '';
+};
+
+// ============================================================
 // Unit: sanitizeInput
 // ============================================================
 
 test('sanitizeInput strips angle brackets from XSS payloads', () => {
-  const sanitize = (str) => String(str).replace(/[<>"'`&\\]/g, '').trim().slice(0, 500);
   const result = sanitize('<script>alert("xss")</script>');
   assert.ok(!result.includes('<'), 'Should not contain <');
   assert.ok(!result.includes('>'), 'Should not contain >');
@@ -22,20 +47,17 @@ test('sanitizeInput strips angle brackets from XSS payloads', () => {
 });
 
 test('sanitizeInput truncates input to 500 characters', () => {
-  const sanitize = (str) => String(str).replace(/[<>"'`&\\]/g, '').trim().slice(0, 500);
   const longInput = 'A'.repeat(1000);
   const result = sanitize(longInput);
   assert.equal(result.length, 500);
 });
 
 test('sanitizeInput trims whitespace', () => {
-  const sanitize = (str) => String(str).replace(/[<>"'`&\\]/g, '').trim().slice(0, 500);
   const result = sanitize('   hello world   ');
   assert.equal(result, 'hello world');
 });
 
 test('sanitizeInput handles empty string', () => {
-  const sanitize = (str) => String(str).replace(/[<>"'`&\\]/g, '').trim().slice(0, 500);
   const result = sanitize('');
   assert.equal(result, '');
 });
@@ -45,23 +67,11 @@ test('sanitizeInput handles empty string', () => {
 // ============================================================
 
 test('escapeHTML converts all dangerous characters to entities', () => {
-  const escapeHTML = (str) => String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
   const result = escapeHTML('A & B < C > "D" \'E\'');
   assert.equal(result, 'A &amp; B &lt; C &gt; &quot;D&quot; &#39;E&#39;');
 });
 
 test('escapeHTML leaves clean strings unchanged', () => {
-  const escapeHTML = (str) => String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
   const result = escapeHTML('Hello World');
   assert.equal(result, 'Hello World');
 });
@@ -146,32 +156,14 @@ test('Mock AI French default response is in French', () => {
 // ============================================================
 
 test('Map route logic returns food path for "food" keyword', () => {
-  const getRoute = (query) => {
-    const text = query.toLowerCase();
-    if (text.includes('food') || text.includes('eat')) return 'M 50 50 L 90 25';
-    if (text.includes('gate') || text.includes('leave') || text.includes('exit')) return 'M 50 50 L 10 75';
-    return '';
-  };
   assert.equal(getRoute('find food'), 'M 50 50 L 90 25');
 });
 
 test('Map route logic returns egress path for "exit" keyword', () => {
-  const getRoute = (query) => {
-    const text = query.toLowerCase();
-    if (text.includes('food') || text.includes('eat')) return 'M 50 50 L 90 25';
-    if (text.includes('gate') || text.includes('leave') || text.includes('exit')) return 'M 50 50 L 10 75';
-    return '';
-  };
   assert.equal(getRoute('where is the exit'), 'M 50 50 L 10 75');
 });
 
 test('Map route logic returns empty path for general queries', () => {
-  const getRoute = (query) => {
-    const text = query.toLowerCase();
-    if (text.includes('food') || text.includes('eat')) return 'M 50 50 L 90 25';
-    if (text.includes('gate') || text.includes('leave') || text.includes('exit')) return 'M 50 50 L 10 75';
-    return '';
-  };
   assert.equal(getRoute('hello world'), '');
 });
 
@@ -197,8 +189,6 @@ test('Heatmap level generation produces values between 1 and 3', () => {
 // Security: No eval, no innerHTML in source files
 // ============================================================
 
-const fs = require('fs');
-const path = require('path');
 
 test('Source code does not contain innerHTML (XSS prevention)', () => {
   const jsDir = path.join(__dirname, '..', 'js');

@@ -448,6 +448,38 @@ header {
 .transit-dest { flex: 1; margin-left: 1rem; font-weight: 600; font-size: 1.1rem; }
 .transit-time { font-family: 'Teko', sans-serif; font-size: 1.5rem; color: var(--primary-color); }
 
+/* Sustainability Widget */
+.sustainability-container { grid-column: 1 / -1; }
+.sustainability-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+.metric-box {
+  background: rgba(22, 163, 74, 0.1);
+  border: 1px solid #16a34a;
+  border-radius: var(--radius-sm);
+  padding: 1.5rem;
+  text-align: center;
+}
+.metric-value {
+  font-family: 'Teko', sans-serif;
+  font-size: 3rem;
+  color: #4ade80;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+.metric-label {
+  font-size: 0.95rem;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+@media (max-width: 768px) {
+  .sustainability-metrics { grid-template-columns: 1fr; }
+}
+
 /* Footer */
 .site-footer {
   background: rgba(0, 0, 0, 0.8);

@@ -1,4 +1,3 @@
-'use strict';
 
 /**
  * @module main
@@ -9,6 +8,8 @@
 
 import { callProxyAPI, getMockFanResponse, getMockStaffAlert } from './api.js';
 import { UIController } from './ui.js';
+
+const ui = new UIController();
 
 /**
  * Cached DOM element references for the entire application.
@@ -48,7 +49,7 @@ let activeActionCallback = null;
  * When true, the app uses local mock responses instead of calling the proxy API.
  * @type {boolean}
  */
-let useMock = false;
+const useMock = false;
 
 /**
  * Maps language codes to their full human-readable names for API prompts.
@@ -66,7 +67,7 @@ const LANG_NAMES = {
  */
 function init() {
   bindEvents();
-  UIController.renderHeatmap(els.heatmapGrid);
+  ui.renderHeatmap(els.heatmapGrid);
   switchMode('fan');
 }
 
@@ -171,15 +172,15 @@ async function handleChatSubmit(e) {
   const text = sanitizeInput(els.chatInput.value);
   if (!text) { return; }
 
-  UIController.appendMessage(els.chatMessages, 'user', text);
+  ui.appendMessage(els.chatMessages, 'user', text);
   els.chatInput.value = '';
 
-  const loaderId = UIController.appendMessage(
+  const loaderId = ui.appendMessage(
     els.chatMessages,
     'ai',
     useMock ? 'Demo Mode Active. Simulating AI...' : 'Thinking...'
   );
-  UIController.updateSchematicMap(els.routePath, text);
+  ui.updateSchematicMap(els.routePath, text);
 
   const lang = els.langSelect ? els.langSelect.value : 'en';
   const langName = LANG_NAMES[lang] || 'English';
@@ -194,9 +195,9 @@ async function handleChatSubmit(e) {
         `You are the official FIFA 2026 Smart Stadium Assistant. You MUST respond entirely in ${langName}. If the user asks for directions, food, or gates, tell them to look at the "Schematic Wayfinding" map on their screen. Keep responses under 2 sentences. The user asks: ${text}`
       );
     }
-    UIController.updateMessage(loaderId, response);
+    ui.updateMessage(loaderId, response);
   } catch (err) {
-    UIController.updateMessage(loaderId, `Error communicating with AI: ${err.message}`);
+    ui.updateMessage(loaderId, `Error communicating with AI: ${err.message}`);
   }
 }
 
@@ -207,7 +208,7 @@ async function handleChatSubmit(e) {
  * @returns {Promise<void>}
  */
 async function generateAIAlert() {
-  UIController.renderHeatmap(els.heatmapGrid);
+  ui.renderHeatmap(els.heatmapGrid);
   els.alertsList.textContent = '';
 
   const loadingState = document.createElement('div');
@@ -230,7 +231,7 @@ async function generateAIAlert() {
 
     els.alertsList.textContent = '';
 
-    const { container, button } = UIController.createAlertItem(response);
+    const { container, button } = ui.createAlertItem(response);
     els.alertsList.appendChild(container);
 
     button.addEventListener('click', () => {
@@ -259,10 +260,10 @@ async function generateAIAlert() {
  */
 function requireConfirmation(actionContext, callback) {
   activeActionCallback = callback;
-  UIController.showConfirmModal(
+  ui.showConfirmModal(
     els.modalConfirm,
     els.confirmMessage,
-    `Are you absolutely sure you want to execute the following operational command?\n\n"${actionContext}"`
+    `Are you absolutely sure you want to execute the following operational command?\n\n"${escapeHTML(actionContext)}"`
   );
 }
 
