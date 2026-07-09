@@ -20,5 +20,8 @@
     "node": ">=18.0.0"
   },
   "author": "FIFA Connect 2026 Team",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "jsdom": "^29.1.1"
+  }
 }
