@@ -142,24 +142,58 @@ function switchMode(mode) {
 
 /**
  * Updates static UI elements based on the selected language.
+ * Uses direct DOM selectors (IDs and CSS classes) for maximum compatibility.
  * @param {string} lang - The language code (e.g., 'en', 'es', 'fr').
  */
 function updateUITranslation(lang) {
   const dict = i18n[lang] || i18n.en;
-  
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (dict[key]) {
-      el.textContent = dict[key];
-    }
+
+  // Header
+  const appTitle = document.querySelector('.header-logo h1');
+  if (appTitle) { appTitle.textContent = dict.appTitle; }
+  if (els.btnFan) { els.btnFan.textContent = dict.btnFan; }
+  if (els.btnStaff) { els.btnStaff.textContent = dict.btnStaff; }
+  if (els.btnSettings) { els.btnSettings.textContent = dict.btnSettings; }
+
+  // Chat section
+  const chatTitle = document.getElementById('chat-title');
+  if (chatTitle) { chatTitle.textContent = dict.chatTitle; }
+  const chatSubtitle = document.querySelector('#chat-title + .subtitle, .chat-container .subtitle');
+  if (chatSubtitle) { chatSubtitle.textContent = dict.chatSubtitle; }
+  if (els.chatInput) { els.chatInput.placeholder = dict.chatPlaceholder; }
+  const sendBtn = document.querySelector('#chat-form button[type="submit"]');
+  if (sendBtn) { sendBtn.textContent = dict.btnSend; }
+
+  // Wayfinding section
+  const wayfindingTitle = document.getElementById('wayfinding-title');
+  if (wayfindingTitle) { wayfindingTitle.textContent = dict.wayfindingTitle; }
+  const wayfindingSub = document.querySelector('.map-container .subtitle');
+  if (wayfindingSub) { wayfindingSub.textContent = dict.wayfindingSubtitle; }
+
+  // Map zones
+  const zoneMap = { N: 'zoneNorth', S: 'zoneSouth', E: 'zoneEast', W: 'zoneWest' };
+  document.querySelectorAll('.map-zone').forEach(zone => {
+    const key = zoneMap[zone.getAttribute('data-zone')];
+    if (key && dict[key]) { zone.textContent = dict[key]; }
   });
 
-  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-    const key = el.getAttribute('data-i18n-placeholder');
-    if (dict[key]) {
-      el.placeholder = dict[key];
-    }
-  });
+  // Transit section
+  const transitTitle = document.getElementById('transit-title');
+  if (transitTitle) { transitTitle.textContent = dict.transitTitle; }
+  const transitSub = document.querySelector('.transit-container .subtitle');
+  if (transitSub) { transitSub.textContent = dict.transitSubtitle; }
+
+  // Transit items
+  const routes = document.querySelectorAll('.transit-route');
+  const dests = document.querySelectorAll('.transit-dest');
+  const times = document.querySelectorAll('.transit-time');
+  if (routes[0]) { routes[0].textContent = dict.routeRed; }
+  if (dests[0]) { dests[0].textContent = dict.destCity; }
+  if (routes[1]) { routes[1].textContent = dict.routeBlue; }
+  if (dests[1]) { dests[1].textContent = dict.destStation; }
+  if (routes[2]) { routes[2].textContent = dict.routeGreen; }
+  if (dests[2]) { dests[2].textContent = dict.destWestGate; }
+  if (times[2]) { times[2].textContent = dict.timeActive; }
 }
 
 /**
