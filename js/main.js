@@ -35,8 +35,17 @@ const els = {
   btnCancelAction: document.getElementById('btn-cancel-action'),
   btnConfirmAction: document.getElementById('btn-confirm-action'),
 
-  langSelect: document.getElementById('lang-select')
+  btnConfirmAction: document.getElementById('btn-confirm-action'),
+
+  langSelect: document.getElementById('lang-select'),
+  csvUpload: document.getElementById('csv-upload')
 };
+
+/**
+ * Stores the currently uploaded custom telemetry data.
+ * @type {Array<{sector: string, level: number}>|null}
+ */
+let currentTelemetryData = null;
 
 /**
  * Stores the callback for the currently pending confirmation action.
@@ -66,7 +75,7 @@ const LANG_NAMES = {
  */
 function init() {
   bindEvents();
-  ui.renderHeatmap(els.heatmapGrid);
+  ui.renderHeatmap(els.heatmapGrid, currentTelemetryData);
   switchMode('fan');
 }
 
@@ -81,6 +90,10 @@ function bindEvents() {
   els.btnSettings.addEventListener('click', () => {
     alert('API Configuration is now managed securely on the server via Environment Variables (Vercel/Node).');
   });
+
+  if (els.csvUpload) {
+    els.csvUpload.addEventListener('change', handleCsvUpload);
+  }
 
   els.chatForm.addEventListener('submit', handleChatSubmit);
   els.btnSimAlert.addEventListener('click', generateAIAlert);
@@ -146,6 +159,37 @@ function sanitizeInput(str) {
 }
 
 /**
+ * Parses uploaded CSV telemetry data and updates the heatmap.
+ * @param {Event} e - The file input change event.
+ */
+function handleCsvUpload(e) {
+  const file = e.target.files[0];
+  if (!file) { return; }
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    try {
+      const text = event.target.result;
+      const lines = text.split('\n').filter(line => line.trim().length > 0);
+      const parsedData = [];
+      lines.forEach((line, index) => {
+        if (index === 0 && line.toLowerCase().includes('sector')) { return; } // skip header
+        const parts = line.split(',');
+        if (parts.length >= 2) {
+          parsedData.push({ sector: sanitizeInput(parts[0]), level: parseInt(parts[1].trim(), 10) || 1 });
+        }
+      });
+      if (parsedData.length > 0) {
+        currentTelemetryData = parsedData;
+        ui.renderHeatmap(els.heatmapGrid, currentTelemetryData);
+      }
+    } catch (err) {
+      console.error('Error parsing CSV', err);
+    }
+  };
+  reader.readAsText(file);
+}
+
+/**
  * Escapes HTML entities in a string to prevent injection.
  * @param {string} str - The raw input string.
  * @returns {string} The escaped string with HTML entities replaced.
@@ -191,7 +235,7 @@ async function handleChatSubmit(e) {
       await new Promise(r => setTimeout(r, 800));
     } else {
       response = await callProxyAPI(
-        `You are the official FIFA 2026 Smart Stadium Assistant. You MUST respond entirely in ${langName}. If the user asks for directions, food, or gates, tell them to look at the "Schematic Wayfinding" map on their screen. Keep responses under 2 sentences. The user asks: ${text}`
+        `You are the official FIFA 2026 Smart Stadium Assistant. You MUST respond entirely in ${langName}. If the user asks for directions, food, or gates, tell them to look at the "Schematic Wayfinding" map on their screen. Keep responses under 2 sentences. You must include a brief "Reasoning:" explaining why you suggested that route. The user asks: ${text}`
       );
     }
     ui.updateMessage(loaderId, response);
@@ -207,7 +251,7 @@ async function handleChatSubmit(e) {
  * @returns {Promise<void>}
  */
 async function generateAIAlert() {
-  ui.renderHeatmap(els.heatmapGrid);
+  ui.renderHeatmap(els.heatmapGrid, currentTelemetryData);
   els.alertsList.textContent = '';
 
   const loadingState = document.createElement('div');
@@ -224,7 +268,7 @@ async function generateAIAlert() {
       await new Promise(r => setTimeout(r, 1000));
     } else {
       response = await callProxyAPI(
-        'Act as an operational AI for FIFA 2026. Generate a 1-sentence urgent crowd management alert recommending opening a specific emergency gate due to congestion. Format it as an actionable alert.'
+        'Act as an operational AI for FIFA 2026. Generate a 1-sentence urgent crowd management alert recommending opening a specific emergency gate due to congestion. You must include a "Reasoning:" section explaining exactly why you made this operational decision based on the telemetry data. Format it as an actionable alert.'
       );
     }
 

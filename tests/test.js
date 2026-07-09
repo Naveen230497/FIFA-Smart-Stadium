@@ -185,6 +185,30 @@ test('Heatmap level generation produces values between 1 and 3', () => {
 });
 
 // ============================================================
+// Edge Cases & Extreme Inputs
+// ============================================================
+
+test('Edge Case: sanitizeInput handles massive 10,000+ char strings without freezing', () => {
+  const massiveInput = 'B'.repeat(15000);
+  const result = sanitize(massiveInput);
+  assert.equal(result.length, 500, 'Should strictly truncate massive strings to 500 chars');
+});
+
+test('Edge Case: escapeHTML handles null/undefined gracefully', () => {
+  assert.equal(escapeHTML(null), 'null');
+  assert.equal(escapeHTML(undefined), 'undefined');
+});
+
+test('Edge Case: Map route logic ignores malformed inputs', () => {
+  assert.equal(getRoute('  '), '');
+  assert.equal(getRoute('!@#$%^&*()'), '');
+});
+
+test('Edge Case: Mock AI defaults correctly on empty queries', () => {
+  assert.ok(getMockFanResponse('', 'en').includes('Welcome'));
+});
+
+// ============================================================
 // Security: No eval, no innerHTML in source files
 // ============================================================
 

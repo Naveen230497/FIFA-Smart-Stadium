@@ -76,13 +76,25 @@ export class UIController {
   }
 
   /**
-   * Renders a randomized crowd-density heatmap into the given container.
+   * Renders a randomized or custom crowd-density heatmap into the given container.
    * Creates heat-cell divs for each predefined stadium sector.
    * @param {HTMLElement} container - The heatmap grid container element.
+   * @param {Array<{sector: string, level: number}>} [customData] - Optional custom data array.
    * @returns {void}
    */
-  renderHeatmap(container) {
+  renderHeatmap(container, customData = null) {
     container.textContent = '';
+    
+    if (customData && Array.isArray(customData)) {
+      customData.forEach(item => {
+        const div = document.createElement('div');
+        div.className = `heat-cell level-${item.level}`;
+        div.textContent = item.sector;
+        container.appendChild(div);
+      });
+      return;
+    }
+
     const sectors = ['Sec A', 'Sec B', 'Sec C', 'Gate 1', 'Gate 2', 'Gate 3', 'VIP', 'Food E.'];
     sectors.forEach(s => {
       const div = document.createElement('div');
