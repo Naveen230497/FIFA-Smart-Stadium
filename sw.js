@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fifa26-v1';
+const CACHE_NAME = 'fifa26-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -6,6 +6,7 @@ const ASSETS_TO_CACHE = [
   './js/main.js',
   './js/api.js',
   './js/ui.js',
+  './js/i18n.js',
   './manifest.json'
 ];
 
