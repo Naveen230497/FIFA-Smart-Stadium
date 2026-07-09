@@ -14,12 +14,12 @@
   <!-- Semantic Header / Navigation -->
   <header role="banner">
     <div class="header-logo">
-      <h1>🏆 FIFA Connect 2026</h1>
+      <h1 data-i18n="appTitle">🏆 FIFA Connect 2026</h1>
     </div>
     <nav class="header-controls" aria-label="Main mode navigation">
-      <button id="btn-mode-fan" class="btn btn-outline" aria-label="Switch to Fan Experience Mode">Fan Mode</button>
-      <button id="btn-mode-staff" class="btn btn-outline" aria-label="Switch to Staff Operations Mode">Staff Mode</button>
-      <button id="btn-settings" class="btn btn-primary" aria-haspopup="dialog" aria-label="View API configuration status">⚙️ API Status</button>
+      <button id="btn-mode-fan" class="btn btn-outline" aria-label="Switch to Fan Experience Mode" data-i18n="btnFan">Fan Mode</button>
+      <button id="btn-mode-staff" class="btn btn-outline" aria-label="Switch to Staff Operations Mode" data-i18n="btnStaff">Staff Mode</button>
+      <button id="btn-settings" class="btn btn-primary" aria-haspopup="dialog" aria-label="View API configuration status" data-i18n="btnSettings">⚙️ API Status</button>
     </nav>
   </header>
 
@@ -36,8 +36,8 @@
           <header class="card-header">
             <div class="card-header-row">
               <div>
-                <h2 id="chat-title">AI Stadium Assistant</h2>
-                <p class="subtitle">Ask for directions, food, or support in any language.</p>
+                <h2 id="chat-title" data-i18n="chatTitle">AI Stadium Assistant</h2>
+                <p class="subtitle" data-i18n="chatSubtitle">Ask for directions, food, or support in any language.</p>
               </div>
               <!-- Multi-Language Selector -->
               <div class="lang-selector" role="group" aria-label="Language selection for AI responses">
@@ -60,23 +60,23 @@
           
           <form id="chat-form" class="chat-input-area" aria-label="Chat input form">
             <label for="chat-input" class="sr-only">Type your message to the AI</label>
-            <input type="text" id="chat-input" placeholder="Type your message..." required autocomplete="off">
-            <button type="submit" class="btn btn-primary" aria-label="Send Message to AI">Send</button>
+            <input type="text" id="chat-input" placeholder="Type your message..." required autocomplete="off" data-i18n-placeholder="chatPlaceholder">
+            <button type="submit" class="btn btn-primary" aria-label="Send Message to AI" data-i18n="btnSend">Send</button>
           </form>
         </article>
 
         <!-- Schematic Map -->
         <aside class="map-container card" aria-labelledby="wayfinding-title">
           <header class="card-header">
-            <h2 id="wayfinding-title">Schematic Wayfinding</h2>
-            <p class="subtitle">AI-powered indoor navigation and route guidance</p>
+            <h2 id="wayfinding-title" data-i18n="wayfindingTitle">Schematic Wayfinding</h2>
+            <p class="subtitle" data-i18n="wayfindingSubtitle">AI-powered indoor navigation and route guidance</p>
           </header>
           <div class="map-display" role="img" aria-label="Football pitch schematic map indicating stadium zones and navigation routes">
             <div class="schematic-map">
-              <div class="map-zone" data-zone="N" aria-label="North Stand">North Stand</div>
-              <div class="map-zone" data-zone="S" aria-label="South Stand">South Stand</div>
-              <div class="map-zone" data-zone="E" aria-label="East Gate - Food Court">East Gate (Food)</div>
-              <div class="map-zone" data-zone="W" aria-label="West Gate - Emergency Egress">West Gate (Egress)</div>
+              <div class="map-zone" data-zone="N" aria-label="North Stand" data-i18n="zoneNorth">North Stand</div>
+              <div class="map-zone" data-zone="S" aria-label="South Stand" data-i18n="zoneSouth">South Stand</div>
+              <div class="map-zone" data-zone="E" aria-label="East Gate - Food Court" data-i18n="zoneEast">East Gate (Food)</div>
+              <div class="map-zone" data-zone="W" aria-label="West Gate - Emergency Egress" data-i18n="zoneWest">West Gate (Egress)</div>
               <svg class="route-overlay" id="route-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
                 <path id="route-path" d="" fill="none" />
               </svg>
@@ -87,8 +87,8 @@
         <!-- Transit & Transportation Hub -->
         <aside class="transit-container card" aria-labelledby="transit-title">
           <header class="card-header">
-            <h2 id="transit-title">Smart Transit Hub</h2>
-            <p class="subtitle">Real-time transportation schedules</p>
+            <h2 id="transit-title" data-i18n="transitTitle">Smart Transit Hub</h2>
+            <p class="subtitle" data-i18n="transitSubtitle">Real-time transportation schedules</p>
           </header>
           <div class="transit-content" role="region" aria-live="polite">
             <ul class="transit-list" aria-label="Upcoming transit departures">
@@ -96,19 +96,19 @@
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3020.9158309170274!2d-74.07687832345826!3d40.81283997137887!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2f861bf070001%3A0x6b4f738b93ba9b72!2sMetLife%20Stadium!5e0!3m2!1sen!2sus!4v1714400000000!5m2!1sen!2sus" width="100%" height="150" style="border:0; border-radius: 4px; margin-bottom: 0.5rem;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Google Maps - Smart Transit Hub Location"></iframe>
               </li>
               <li class="transit-item">
-                <span class="transit-route route-red">Express Shuttle A</span>
-                <span class="transit-dest">City Center</span>
+                <span class="transit-route route-red" data-i18n="routeRed">Express Shuttle A</span>
+                <span class="transit-dest" data-i18n="destCity">City Center</span>
                 <span class="transit-time">2 min</span>
               </li>
               <li class="transit-item">
-                <span class="transit-route route-blue">Metro Line 1</span>
-                <span class="transit-dest">Central Station</span>
+                <span class="transit-route route-blue" data-i18n="routeBlue">Metro Line 1</span>
+                <span class="transit-dest" data-i18n="destStation">Central Station</span>
                 <span class="transit-time">5 min</span>
               </li>
               <li class="transit-item">
-                <span class="transit-route route-green">Rideshare Zone</span>
-                <span class="transit-dest">West Gate</span>
-                <span class="transit-time">Active</span>
+                <span class="transit-route route-green" data-i18n="routeGreen">Rideshare Zone</span>
+                <span class="transit-dest" data-i18n="destWestGate">West Gate</span>
+                <span class="transit-time" data-i18n="timeActive">Active</span>
               </li>
             </ul>
           </div>

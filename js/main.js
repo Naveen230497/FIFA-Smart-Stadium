@@ -7,6 +7,7 @@
 
 import { callProxyAPI, getMockFanResponse, getMockStaffAlert } from './api.js';
 import { UIController } from './ui.js';
+import { i18n } from './i18n.js';
 
 const ui = new UIController();
 
@@ -77,6 +78,9 @@ function init() {
   bindEvents();
   ui.renderHeatmap(els.heatmapGrid, currentTelemetryData);
   switchMode('fan');
+  if (els.langSelect) {
+    updateUITranslation(els.langSelect.value);
+  }
 }
 
 /**
@@ -93,6 +97,12 @@ function bindEvents() {
 
   if (els.csvUpload) {
     els.csvUpload.addEventListener('change', handleCsvUpload);
+  }
+
+  if (els.langSelect) {
+    els.langSelect.addEventListener('change', (e) => {
+      updateUITranslation(e.target.value);
+    });
   }
 
   els.chatForm.addEventListener('submit', handleChatSubmit);
@@ -128,6 +138,28 @@ function switchMode(mode) {
     els.fanMode.classList.add('hidden');
   }
   updateHeaderMode(mode);
+}
+
+/**
+ * Updates static UI elements based on the selected language.
+ * @param {string} lang - The language code (e.g., 'en', 'es', 'fr').
+ */
+function updateUITranslation(lang) {
+  const dict = i18n[lang] || i18n.en;
+  
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key]) {
+      el.textContent = dict[key];
+    }
+  });
+
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (dict[key]) {
+      el.placeholder = dict[key];
+    }
+  });
 }
 
 /**
