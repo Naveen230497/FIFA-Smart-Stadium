@@ -66,10 +66,22 @@ export class UIController {
    */
   updateSchematicMap(routePath, query) {
     const text = query.toLowerCase();
-    if (text.includes('food') || text.includes('eat')) {
+    
+    if (text.includes('food') || text.includes('eat') || text.includes('hungry')) {
+      // East Gate
       routePath.setAttribute('d', 'M 50 50 L 90 25');
-    } else if (text.includes('gate') || text.includes('leave') || text.includes('exit')) {
+    } else if (text.includes('gate') || text.includes('leave') || text.includes('exit') || text.includes('taxi') || text.includes('ride') || text.includes('uber')) {
+      // West Gate
       routePath.setAttribute('d', 'M 50 50 L 10 75');
+    } else if (text.includes('metro') || text.includes('train') || text.includes('subway') || text.includes('station')) {
+      // South Plaza
+      routePath.setAttribute('d', 'M 50 50 L 50 90');
+    } else if (text.includes('shuttle') || text.includes('bus') || text.includes('vip') || text.includes('city')) {
+      // North Plaza
+      routePath.setAttribute('d', 'M 50 50 L 50 10');
+    } else if (text.includes('restroom') || text.includes('bathroom') || text.includes('medical') || text.includes('aid')) {
+      // Generic aid location (Bottom Right)
+      routePath.setAttribute('d', 'M 50 50 L 90 75');
     } else {
       routePath.setAttribute('d', '');
     }

@@ -29,8 +29,11 @@ const escapeHTML = (str) => String(str)
 
 const getRoute = (query) => {
   const text = query.toLowerCase();
-  if (text.includes('food') || text.includes('eat')) return 'M 50 50 L 90 25';
-  if (text.includes('gate') || text.includes('leave') || text.includes('exit')) return 'M 50 50 L 10 75';
+  if (text.includes('food') || text.includes('eat') || text.includes('hungry')) return 'M 50 50 L 90 25';
+  if (text.includes('gate') || text.includes('leave') || text.includes('exit') || text.includes('taxi') || text.includes('ride')) return 'M 50 50 L 10 75';
+  if (text.includes('metro') || text.includes('train')) return 'M 50 50 L 50 90';
+  if (text.includes('shuttle') || text.includes('bus') || text.includes('vip')) return 'M 50 50 L 50 10';
+  if (text.includes('restroom') || text.includes('bathroom') || text.includes('medical')) return 'M 50 50 L 90 75';
   return '';
 };
 
@@ -158,8 +161,20 @@ test('Map route logic returns food path for "food" keyword', () => {
   assert.equal(getRoute('find food'), 'M 50 50 L 90 25');
 });
 
-test('Map route logic returns egress path for "exit" keyword', () => {
-  assert.equal(getRoute('where is the exit'), 'M 50 50 L 10 75');
+test('Map route logic returns egress/taxi path for "taxi" keyword', () => {
+  assert.equal(getRoute('where is the taxi'), 'M 50 50 L 10 75');
+});
+
+test('Map route logic returns metro path for "train" keyword', () => {
+  assert.equal(getRoute('catch a train'), 'M 50 50 L 50 90');
+});
+
+test('Map route logic returns shuttle path for "bus" keyword', () => {
+  assert.equal(getRoute('express bus'), 'M 50 50 L 50 10');
+});
+
+test('Map route logic returns medical path for "restroom" keyword', () => {
+  assert.equal(getRoute('nearest restroom'), 'M 50 50 L 90 75');
 });
 
 test('Map route logic returns empty path for general queries', () => {
