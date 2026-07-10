@@ -36,8 +36,6 @@ const els = {
   btnCancelAction: document.getElementById('btn-cancel-action'),
   btnConfirmAction: document.getElementById('btn-confirm-action'),
 
-  btnConfirmAction: document.getElementById('btn-confirm-action'),
-
   langSelect: document.getElementById('lang-select'),
   csvUpload: document.getElementById('csv-upload')
 };
@@ -60,15 +58,7 @@ let activeActionCallback = null;
  */
 const useMock = false;
 
-/**
- * Maps language codes to their full human-readable names for API prompts.
- * @type {Object<string, string>}
- */
-const LANG_NAMES = {
-  en: 'English',
-  es: 'Spanish',
-  fr: 'French'
-};
+
 
 /**
  * Initializes the application: binds events, renders initial UI, and sets fan mode active.
@@ -292,7 +282,6 @@ async function handleChatSubmit(e) {
   ui.updateSchematicMap(els.routePath, text);
 
   const lang = els.langSelect ? els.langSelect.value : 'en';
-  const langName = LANG_NAMES[lang] || 'English';
 
   try {
     let response;

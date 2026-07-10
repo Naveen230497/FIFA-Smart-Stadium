@@ -20,7 +20,7 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) return caches.delete(cache);
+          if (cache !== CACHE_NAME) {return caches.delete(cache);}
         })
       );
     })
@@ -30,7 +30,7 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   // Do not cache API calls
-  if (event.request.url.includes('googleapis.com')) return;
+  if (event.request.url.includes('googleapis.com')) {return;}
   
   event.respondWith(
     fetch(event.request).catch(() => caches.match(event.request))

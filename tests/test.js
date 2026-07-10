@@ -29,11 +29,11 @@ const escapeHTML = (str) => String(str)
 
 const getRoute = (query) => {
   const text = query.toLowerCase();
-  if (text.includes('food') || text.includes('eat') || text.includes('hungry')) return 'M 50 50 L 90 25';
-  if (text.includes('gate') || text.includes('leave') || text.includes('exit') || text.includes('taxi') || text.includes('ride')) return 'M 50 50 L 10 75';
-  if (text.includes('metro') || text.includes('train')) return 'M 50 50 L 50 90';
-  if (text.includes('shuttle') || text.includes('bus') || text.includes('vip')) return 'M 50 50 L 50 10';
-  if (text.includes('restroom') || text.includes('bathroom') || text.includes('medical')) return 'M 50 50 L 90 75';
+  if (text.includes('food') || text.includes('eat') || text.includes('hungry')) {return 'M 50 50 L 90 25';}
+  if (text.includes('gate') || text.includes('leave') || text.includes('exit') || text.includes('taxi') || text.includes('ride')) {return 'M 50 50 L 10 75';}
+  if (text.includes('metro') || text.includes('train')) {return 'M 50 50 L 50 90';}
+  if (text.includes('shuttle') || text.includes('bus') || text.includes('vip')) {return 'M 50 50 L 50 10';}
+  if (text.includes('restroom') || text.includes('bathroom') || text.includes('medical')) {return 'M 50 50 L 90 75';}
   return '';
 };
 
@@ -246,7 +246,7 @@ test('Test suite does not use dangerous code evaluation patterns', () => {
   for (const line of lines) {
     const trimmed = line.trim();
     // Skip comments and test description strings
-    if (trimmed.startsWith('//') || trimmed.startsWith('*') || trimmed.startsWith('test(')) continue;
+    if (trimmed.startsWith('//') || trimmed.startsWith('*') || trimmed.startsWith('test(')) {continue;}
     // Check for actual eval() usage (not in strings/test names)
     if (/\beval\s*\(/.test(trimmed) && !trimmed.includes('assert') && !trimmed.includes("'eval")) {
       foundDangerousEval = true;
