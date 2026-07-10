@@ -69,7 +69,11 @@ Stadium Layout Context:
 - Express Shuttles (to City Center) depart from the North Plaza.
 - Restrooms and First Aid are located near every major gate.
 
-If the user asks for food, explicitly suggest the East Gate. If they ask for an exit, explicitly suggest the West Gate. If they ask for transit (taxis, metro, shuttles), provide the specific location from the context above. After suggesting the specific location, tell them to follow the route on the Schematic Wayfinding map. You must include a brief "Reasoning:" explaining why you suggested that route. Keep responses under 2 sentences. Do not mention wristbands or other apps.`;
+If the user asks for food, explicitly suggest the East Gate. If they ask for an exit, explicitly suggest the West Gate. If they ask for transit (taxis, metro, shuttles), provide the specific location from the context above. After suggesting the specific location, tell them to follow the route on the Schematic Wayfinding map. Do not mention wristbands or other apps.
+
+You MUST format your response exactly like this:
+[Your 1-2 sentence answer]
+Reasoning: [Your 1 sentence explanation of why you suggested that route]`;
   }
 
   // Build the system prompt
