@@ -7,12 +7,14 @@
 /**
  * Securely calls the serverless proxy API to get an AI response.
  * @param {string} prompt - The prompt payload to send to the AI.
+ * @param {string} [mode='fan'] - The mode of the AI ('fan' or 'staff').
+ * @param {string} [lang='en'] - The language of the response.
  * @returns {Promise<string>} The AI response text content.
  * @throws {Error} If the proxy API returns a non-OK status.
  */
-export async function callProxyAPI(prompt) {
+export async function callProxyAPI(prompt, mode = 'fan', lang = 'en') {
   const url = '/api/chat';
-  const payload = { prompt };
+  const payload = { prompt, mode, lang };
 
   const res = await fetch(url, {
     method: 'POST',

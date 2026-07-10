@@ -300,9 +300,7 @@ async function handleChatSubmit(e) {
       response = getMockFanResponse(text, lang);
       await new Promise(r => setTimeout(r, 800));
     } else {
-      response = await callProxyAPI(
-        `You are the official FIFA 2026 Smart Stadium Assistant. You MUST respond entirely in ${langName}. If the user asks for directions, food, or gates, tell them to look at the "Schematic Wayfinding" map on their screen. Keep responses under 2 sentences. You must include a brief "Reasoning:" explaining why you suggested that route. The user asks: ${text}`
-      );
+      response = await callProxyAPI(text, 'fan', lang);
     }
     ui.updateMessage(loaderId, response);
   } catch (err) {
@@ -333,9 +331,8 @@ async function generateAIAlert() {
       response = getMockStaffAlert();
       await new Promise(r => setTimeout(r, 1000));
     } else {
-      response = await callProxyAPI(
-        'Act as an operational AI for FIFA 2026. Generate a 1-sentence urgent crowd management alert recommending opening a specific emergency gate due to congestion. You must include a "Reasoning:" section explaining exactly why you made this operational decision based on the telemetry data. Format it as an actionable alert.'
-      );
+      // In staff mode, the prompt payload is empty because the backend handles the generation
+      response = await callProxyAPI('Generate operational alert.', 'staff', 'en');
     }
 
     els.alertsList.textContent = '';

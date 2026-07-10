@@ -33,7 +33,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const { prompt, lang } = req.body;
+  const { prompt, lang, mode } = req.body;
 
   // Validate required fields
   if (!prompt || typeof prompt !== 'string') {
@@ -54,10 +54,24 @@ export default async function handler(req, res) {
   // Resolve the target language for multi-language support
   const targetLang = LANGUAGE_MAP[lang] || 'English';
 
-  // Build the system prompt with language constraint
+  let systemMessageContent = '';
+
+  if (mode === 'staff') {
+    systemMessageContent = 'Act as an operational AI for FIFA 2026. Generate a 1-sentence urgent crowd management alert recommending opening a specific emergency gate due to congestion. You must include a "Reasoning:" section explaining exactly why you made this operational decision based on the telemetry data. Format it as an actionable alert.';
+  } else {
+    systemMessageContent = `You are the official FIFA 2026 Smart Stadium Assistant. You MUST respond entirely in ${targetLang}. 
+Stadium Layout Context: 
+- Food and Concessions are located at the East Gate.
+- Emergency Egress and Exits are located at the West Gate.
+- VIP Seating is at the North Stand.
+
+If the user asks for food, explicitly suggest the East Gate. If they ask for an exit, explicitly suggest the West Gate. After suggesting the specific location, tell them to follow the route on the Schematic Wayfinding map. You must include a brief "Reasoning:" explaining why you suggested that route. Keep responses under 2 sentences. Do not mention wristbands or other apps.`;
+  }
+
+  // Build the system prompt
   const systemMessage = {
     role: 'system',
-    content: `You are the official FIFA 2026 Smart Stadium Assistant. You MUST respond entirely in ${targetLang}. If the user asks for directions, food, or gates, tell them to look at the "Schematic Wayfinding" map on their screen, which will highlight their route. Do not mention wristbands or other apps. Keep responses under 2 sentences.`
+    content: systemMessageContent
   };
 
   try {
