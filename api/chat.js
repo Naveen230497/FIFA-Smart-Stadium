@@ -64,8 +64,12 @@ Stadium Layout Context:
 - Food and Concessions are located at the East Gate.
 - Emergency Egress and Exits are located at the West Gate.
 - VIP Seating is at the North Stand.
+- Taxis and Rideshares are located outside the West Gate.
+- Metro Line 1 (to Central Station) is located at the South Plaza.
+- Express Shuttles (to City Center) depart from the North Plaza.
+- Restrooms and First Aid are located near every major gate.
 
-If the user asks for food, explicitly suggest the East Gate. If they ask for an exit, explicitly suggest the West Gate. After suggesting the specific location, tell them to follow the route on the Schematic Wayfinding map. You must include a brief "Reasoning:" explaining why you suggested that route. Keep responses under 2 sentences. Do not mention wristbands or other apps.`;
+If the user asks for food, explicitly suggest the East Gate. If they ask for an exit, explicitly suggest the West Gate. If they ask for transit (taxis, metro, shuttles), provide the specific location from the context above. After suggesting the specific location, tell them to follow the route on the Schematic Wayfinding map. You must include a brief "Reasoning:" explaining why you suggested that route. Keep responses under 2 sentences. Do not mention wristbands or other apps.`;
   }
 
   // Build the system prompt
