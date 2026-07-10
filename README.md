@@ -35,6 +35,15 @@ graph TD
 - **Sustainability Tracking:** The Staff Dashboard features a Green Operations widget that calculates real-time CO2 emissions offset by actively routing fans to mass transit rather than localized rideshares.
 - **Security & XSS Immunity:** The frontend exclusively uses `document.createElement` and `textContent`. The `vercel.json` file enforces strict Content-Security-Policy (CSP) headers.
 
+### 🧪 How to Test the Operational Heatmap (For Judges)
+To properly test the CSV telemetry upload feature:
+1. Download the `sample-telemetry.csv` file located in the root of this GitHub repository.
+2. Open the Live App and click **"STAFF MODE"** in the top right corner.
+3. Click the **"Choose File"** button next to the "Operational Intelligence Heatmap" title.
+4. Upload the `sample-telemetry.csv` file.
+5. Watch the heatmap instantly update with live simulated crowd congestion data.
+6. Click **"Generate AI Alert"** to see the LLM automatically analyze the new congestion data and recommend an operational decision with explicit reasoning.
+
 ## 4. Assumptions Made
 1. **Telemetry Data Simulation:** It is assumed that in a real production environment, the Staff Mode heatmap would be fed by real-time IoT turnstile and camera telemetry APIs. For this prototype, telemetry is simulated via random data generation.
 2. **Transit API Integration:** It is assumed that the Smart Transit Hub would integrate with local city transit APIs (e.g., Metro, Rideshare). Currently, the schedules are statically modeled to demonstrate UI/UX logic.
