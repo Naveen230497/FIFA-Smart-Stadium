@@ -358,7 +358,7 @@ function requireConfirmation(actionContext, callback) {
   ui.showConfirmModal(
     els.modalConfirm,
     els.confirmMessage,
-    `Are you absolutely sure you want to execute the following operational command?\n\n"${escapeHTML(actionContext)}"`
+    `Are you absolutely sure you want to execute the following operational command?\n\n"${actionContext}"`
   );
 }
 

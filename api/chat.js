@@ -57,7 +57,7 @@ export default async function handler(req, res) {
   let systemMessageContent = '';
 
   if (mode === 'staff') {
-    systemMessageContent = 'Act as an operational AI for FIFA 2026. Generate a 1-sentence urgent crowd management alert recommending opening a specific emergency gate due to congestion. You must include a "Reasoning:" section explaining exactly why you made this operational decision based on the telemetry data. Format it as an actionable alert.';
+    systemMessageContent = 'Act as an operational AI for FIFA 2026. Generate an urgent crowd management alert recommending opening a specific emergency gate due to congestion. You MUST output exactly two short sentences. DO NOT use markdown. DO NOT use bullet points. Sentence 1: The action to take. Sentence 2: Start with "Reasoning: " followed by a brief explanation based on telemetry.';
   } else {
     systemMessageContent = `You are the official FIFA 2026 Smart Stadium Assistant. You MUST respond entirely in ${targetLang}. 
 Stadium Layout Context: 
